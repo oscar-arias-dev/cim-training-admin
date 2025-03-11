@@ -203,7 +203,6 @@ const handleResendEmailClick = async (fullname, email, date, platform) => {
 }
 
 const handleVerifyAttendClick = async (idTraining, idUser, date) => {
-    console.log({ idUser, idTraining });
     try {
         const response = await fetch('https://secure.tecnomotum.com/bcim/training-api.php', {
             method: 'PUT',
