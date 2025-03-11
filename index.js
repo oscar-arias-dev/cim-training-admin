@@ -86,7 +86,7 @@ async function handleButtonClick(id, trainingDate) {
     $('#training-datails').DataTable({
         ajax: async function (data, callback, settings) {
             try {
-                const response = await fetch(`http://localhost/cim-training-backend/training-api.php`, {
+                const response = await fetch(`https://secure.tecnomotum.com/bcim/training-api.php`, {
                     method: "POST",
                     body: JSON.stringify({
                         api: "trainings_participants",
@@ -121,7 +121,7 @@ async function handleButtonClick(id, trainingDate) {
                 render: function (data, type, row) {
                     const { email, fullname, platform } = row;
                     if (today.isAfter(formatedDated)) {
-                        return `<button class="btn btn-${row?.attended === 1 ? 'success" disabled' : 'primary"'} onclick="handleVerifyAttendClick(${row?.id_training}, ${row?.id_participant}, ${dated?.format("YYYY-MM-DD")?.toString()})">${row?.attended === 1 ? "Asistió" : "Asistencia"}</button>`;
+                        return `<button class="btn btn-${(row?.attended === 1 || row?.attended === "1") ? 'success" disabled' : 'primary"'} onclick="handleVerifyAttendClick(${row?.id_training}, ${row?.id_participant}, ${dated?.format("YYYY-MM-DD")?.toString()})">${(row?.attended === 1 || row?.attended === "1") ? "Asistió" : "Asistencia"}</button>`;
                     } else {
                         return '<button class="btn btn-primary" onclick="handleResendEmailClick(\'' + fullname + '\', \'' + email + '\', \'' + toBackDate + '\', \'' + platform + '\')">Reenviar invitación</button>';
                     }
@@ -164,7 +164,7 @@ const handleResendEmailClick = async (fullname, email, date, platform) => {
                 Swal.showLoading();
             },
         });
-        const response = await fetch("http://localhost/cim-training-backend/training-api.php", {
+        const response = await fetch("https://secure.tecnomotum.com/bcim/training-api.php", {
             method: "POST",
             body: JSON.stringify({
                 api: "resend_email",
@@ -205,7 +205,7 @@ const handleResendEmailClick = async (fullname, email, date, platform) => {
 const handleVerifyAttendClick = async (idTraining, idUser, date) => {
     console.log({ idUser, idTraining });
     try {
-        const response = await fetch('http://localhost/cim-training-backend/training-api.php', {
+        const response = await fetch('https://secure.tecnomotum.com/bcim/training-api.php', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -226,7 +226,7 @@ const handleVerifyAttendClick = async (idTraining, idUser, date) => {
 }
 
 async function listTrainings(type = "over") {
-    const results = await fetch('http://localhost/cim-training-backend/training-api.php', {
+    const results = await fetch('https://secure.tecnomotum.com/bcim/training-api.php', {
         method: "POST",
         body: JSON.stringify({
             api: "trainings"
